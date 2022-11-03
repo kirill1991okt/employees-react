@@ -13,9 +13,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { name: 'Kirill', salary: '4000', increase: true, id: 2 },
-        { name: 'Alex', salary: '1000', increase: true, id: 3 },
-        { name: 'Math', salary: '2500', increase: false, id: 4 },
+        { name: 'Kirill', salary: '4000', increase: false, id: '2' },
+        { name: 'Alex', salary: '1000', increase: false, id: '3' },
+        { name: 'Math', salary: '2500', increase: false, id: '4' },
       ],
     };
   }
@@ -23,14 +23,33 @@ class App extends React.Component {
   deletedItem = (id) => {
     this.setState(({ data }) => {
       const newData = data.filter((item) => item.id !== id);
-
       return {
         data: newData,
       };
     });
   };
 
+  addItem = (name, salary) => {
+    this.setState(({ data }) => {
+      const newUserArr = data.slice();
+      newUserArr.push({
+        name: name,
+        salary: salary,
+        increase: false,
+        id: this.uid(),
+      });
+      return {
+        data: newUserArr,
+      };
+    });
+  };
+
+  uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
   render() {
+    console.log(this.uid());
     const { data } = this.state;
     return (
       <div className='app'>
@@ -40,7 +59,7 @@ class App extends React.Component {
           <AppFilter />
         </div>
         <EmployeesList data={data} onDeleted={this.deletedItem} />
-        <EmployeesAddForm />
+        <EmployeesAddForm onAdd={this.addItem} />
       </div>
     );
   }
