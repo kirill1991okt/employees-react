@@ -13,9 +13,15 @@ class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { name: 'Kirill', salary: '4000', increase: false, id: '2' },
-        { name: 'Alex', salary: '1000', increase: false, id: '3' },
-        { name: 'Math', salary: '2500', increase: false, id: '4' },
+        {
+          name: 'Kirill',
+          salary: '4000',
+          increase: false,
+          rise: true,
+          id: '2',
+        },
+        { name: 'Alex', salary: '1000', increase: false, rise: false, id: '3' },
+        { name: 'Math', salary: '2500', increase: false, rise: false, id: '4' },
       ],
     };
   }
@@ -36,10 +42,63 @@ class App extends React.Component {
         name: name,
         salary: salary,
         increase: false,
+        rise: false,
         id: this.uid(),
       });
       return {
         data: newUserArr,
+      };
+    });
+  };
+
+  onToggleIncrease = (id) => {
+    this.setState(({ data }) => {
+      // const element = data.findIndex((item) => item.id === id);
+
+      // const old = data[element];
+      // const newItem = { ...old, increase: !old.increase };
+      // const newArr = [
+      //   ...data.slice(0, element),
+      //   newItem,
+      //   ...data.slice(element + 1),
+      // ];
+      // return {
+      //   data: newArr,
+      // };
+
+      // так же можно использовать следующий способ, он более короткий
+
+      return {
+        data: data.map((item) => {
+          if (item.id === id) {
+            return { ...item, increase: !item.increase };
+          }
+          return item;
+        }),
+      };
+    });
+  };
+
+  onToggleRise = (id) => {
+    this.setState(({ data }) => {
+      // const element = data.findIndex((item) => item.id === id);
+      // const old = data[element];
+      // const newItem = { ...old, rise: !old.rise };
+      // const newArr = [
+      //   ...data.slice(0, element),
+      //   newItem,
+      //   ...data.slice(element + 1),
+      // ];
+      // return {
+      //   data: newArr,
+      // };
+      return {
+        data: data.map((item) => {
+          if (item.id === id) {
+            return { ...item, rise: !item.rise };
+          }
+          return item;
+        }),
       };
     });
   };
@@ -49,16 +108,21 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.uid());
     const { data } = this.state;
+    const increased = data.filter((item) => item.increase).length;
     return (
       <div className='app'>
-        <AppInfo />
+        <AppInfo amountOfEmployees={data.length} takePremium={increased} />
         <div className='search-panel'>
           <SearchPanel />
           <AppFilter />
         </div>
-        <EmployeesList data={data} onDeleted={this.deletedItem} />
+        <EmployeesList
+          data={data}
+          onDeleted={this.deletedItem}
+          onToggleIncrease={this.onToggleIncrease}
+          onToggleRise={this.onToggleRise}
+        />
         <EmployeesAddForm onAdd={this.addItem} />
       </div>
     );

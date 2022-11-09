@@ -1,7 +1,7 @@
 import EmployeesListItem from '../employees-list-item/employees-list-item';
 import './employees-list.css';
 
-const EmployeesList = ({ data, onDeleted }) => {
+const EmployeesList = ({ data, onDeleted, onToggleIncrease, onToggleRise }) => {
   const elements = data.map((item) => {
     return (
       <EmployeesListItem
@@ -9,9 +9,12 @@ const EmployeesList = ({ data, onDeleted }) => {
         name={item.name}
         salary={item.salary}
         increase={item.increase}
+        rise={item.rise}
         onDeleted={() => {
           onDeleted(item.id);
         }}
+        onToggleIncrease={() => onToggleIncrease(item.id)}
+        onToggleRise={() => onToggleRise(item.id)}
       />
     ); // можно так же записать свойства: {...item}
   });
