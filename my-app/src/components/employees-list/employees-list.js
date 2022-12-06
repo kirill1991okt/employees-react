@@ -1,7 +1,13 @@
 import EmployeesListItem from '../employees-list-item/employees-list-item';
 import './employees-list.css';
 
-const EmployeesList = ({ data, onDeleted, onToggleIncrease, onToggleRise }) => {
+const EmployeesList = ({
+  data,
+  onDeleted,
+  onToggleIncrease,
+  onToggleRise,
+  onUpdateSalary,
+}) => {
   const elements = data.map((item) => {
     return (
       <EmployeesListItem
@@ -15,11 +21,12 @@ const EmployeesList = ({ data, onDeleted, onToggleIncrease, onToggleRise }) => {
         }}
         onToggleIncrease={() => onToggleIncrease(item.id)}
         onToggleRise={() => onToggleRise(item.id)}
+        onUpdateSalary={onUpdateSalary}
       />
     ); // можно так же записать свойства: {...item}
   });
 
-  return <ul className='app-list list-group '>{elements}</ul>;
+  return <ul className="app-list list-group ">{elements}</ul>;
 };
 
 export default EmployeesList;

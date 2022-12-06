@@ -139,14 +139,28 @@ class App extends React.Component {
     }
   };
 
+  onUpdateSalary = (name, salary) => {
+    // console.log(name, salary);
+    this.setState(({ data }) => {
+      return {
+        data: data.map((item) => {
+          if (item.name === name) {
+            return { ...item, salary: salary };
+          }
+          return item;
+        }),
+      };
+    });
+  };
+
   render() {
     const { data, term, filter } = this.state;
     const increased = data.filter((item) => item.increase).length;
     const filtered = this.filterPost(this.searchEmp(data, term), filter);
     return (
-      <div className='app'>
+      <div className="app">
         <AppInfo amountOfEmployees={data.length} takePremium={increased} />
-        <div className='search-panel'>
+        <div className="search-panel">
           <SearchPanel onUpdateSearch={this.onUpdateSearch} />
           <AppFilter onUpdateFilter={this.onUpdateFilter} filter={filter} />
         </div>
@@ -155,6 +169,7 @@ class App extends React.Component {
           onDeleted={this.deletedItem}
           onToggleIncrease={this.onToggleIncrease}
           onToggleRise={this.onToggleRise}
+          onUpdateSalary={this.onUpdateSalary}
         />
         <EmployeesAddForm onAdd={this.addItem} />
       </div>
